@@ -21,7 +21,7 @@
                 <div class="container">
                   <div class="row">
                     <div class="col-lg-3 col-sm-12 mt-4">
-                      <div class="card  bg-success mb-3">
+                      <div class="card  bg-dark mb-3">
                         <div class="card-header font-weight-bold ">Total Categories</div>
                         <div class="card-body">
                           <span class="display-2  text-white font-weight-bold px-0">{{ $categories }}</span>
@@ -32,7 +32,7 @@
                       </div>
                     </div>
                     <div class="col-lg-3 col-sm-12 mt-4">
-                      <div class="card  bg-success mb-3">
+                      <div class="card  bg-dark mb-3">
                         <div class="card-header font-weight-bold ">Total Sub-Categories</div>
                         <div class="card-body">
                           <span class="display-2  text-white font-weight-bold px-0">{{ $subcat }}</span>
@@ -43,7 +43,7 @@
                       </div>
                     </div>
                     <div class="col-lg-3 col-sm-12 mt-4">
-                      <div class="card  bg-success mb-3">
+                      <div class="card  bg-dark mb-3">
                         <div class="card-header font-weight-bold ">Total Products</div>
                         <div class="card-body">
                           <span class="display-2  text-white font-weight-bold px-0">{{ $products }}</span>

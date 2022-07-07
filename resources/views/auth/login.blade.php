@@ -19,6 +19,16 @@
     <link href="{{asset('css/nucleo-svg.css')}}" rel="stylesheet" />
     <!-- CSS Files -->
     <link id="pagestyle" href="{{asset('css/argon-dashboard.css?v=2.0.2')}}" rel="stylesheet" />
+    <style>
+        .vertical-text {
+            margin-left: 13px;
+    position: absolute !important;
+    bottom: 0;
+    left: 0;
+    font-size: 20px;
+        }
+ 
+    </style>
 </head>
 
 <body class="">
@@ -32,11 +42,11 @@
                             <div class="card card-plain">
                                 <div class="card-header pb-0 text-start">
                                     <h4 class="font-weight-bolder">Sign In</h4>
-                                         <!-- Session Status -->
-                                <x-auth-session-status class="mb-4" :status="session('status')" />
+                                    <!-- Session Status -->
+                                    <x-auth-session-status class="mb-4" :status="session('status')" />
 
-                                <!-- Validation Errors -->
-                                <x-auth-validation-errors class="mb-4 text-danger" :errors="$errors" />
+                                    <!-- Validation Errors -->
+                                    <x-auth-validation-errors class="mb-4 text-danger" :errors="$errors" />
                                     <p class="mb-0" style="font-size:15px;">Enter your email and password to sign in</p>
                                 </div>
                                 <div class="card-body">
@@ -70,8 +80,9 @@
                                 style="background-image: url({{asset('img/login5.png')}});
                                 background-size: cover;">
                                 <span class="mask bg-gradient-dark opacity-2"></span>
-                                <h4 class="mt-5 text-white font-weight-bolder position-relative">"Lamont Sky"</h4>
-                                <p class="text-white font-weight-bolder position-relative">A typical online store enables the customer to browse the firm's range of products and services</p>
+                                <h4 class="mb-0 text-white font-weight-bolder position-relative vertical-text" id="text">Lamont Sky
+                                </h4>
+                               
                             </div>
                         </div>
                     </div>
