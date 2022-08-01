@@ -22,20 +22,10 @@
     <!-- <script src="{{asset('js/custom.js')}}"></script> -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
- 
+
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
-
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
-    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-
-
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.js" defer></script>
-    <link rel="stylesheet" href="{{asset('plugins/summernote/summernote-bs4.min.css')}}">
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -47,33 +37,28 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
         integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
         crossorigin="anonymous"></script>
-     <link src="https://getbootstrap.com/docs/5.0/utilities/float/">
+    <link src="https://getbootstrap.com/docs/5.0/utilities/float/">
 
-     <link href="{{asset('/css/treeview.css')}}" rel="stylesheet">
-     
+    <link href="{{asset('/css/treeview.css')}}" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script> -->
-
 
 
 </head>
 
 <body class="g-sidenav-show   bg-gray-100">
-    <div class="min-height-250  bg-primary position-absolute w-100" ></div>
+    <div class="min-height-250  bg-primary position-absolute w-100"></div>
     <aside
         class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 "
         id="sidenav-main">
         <div class="sidenav-header">
             <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
                 aria-hidden="true" id="iconSidenav"></i>
-            <a class="navbar-brand m-0" href="{{route('dashboard')}} "
-                target="_blank">
+            <a class="navbar-brand m-0" href="{{route('dashboard')}} " target="_blank">
                 <img src="{{asset('img/logo-ct-dark.png')}}" class="navbar-brand-img h-100" alt="main_logo">
                 <span class="ms-1 font-weight-bold"> Lamont Sky</span>
             </a>
@@ -82,7 +67,8 @@
         <div class="collapse-navbar  w-auto " id="sidenav-collapse-main">
             <ul class="navbar-nav ">
                 <li class="nav-item">
-                    <a class="nav-link {{ (\Request::route()->getName() == 'dashboard') ? 'active' : '' }}" href="{{route('dashboard')}}">
+                    <a class="nav-link {{ (\Request::route()->getName() == 'dashboard') ? 'active' : '' }}"
+                        href="{{route('dashboard')}}">
                         <div
                             class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ni ni-tv-2 text-info text-sm opacity-10"></i>
@@ -91,7 +77,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link  {{ (\Request::route()->getName() == 'categories') ? 'active' : '' }}" href="{{route('categories')}}">
+                    <a class="nav-link  {{ (\Request::route()->getName() == 'categories') ? 'active' : '' }}"
+                        href="{{route('categories')}}">
                         <div
                             class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ni ni-app text-dark text-sm opacity-10"></i>
@@ -99,24 +86,26 @@
                         <span class="nav-link-text ms-1">Categories</span>
                     </a>
                 </li>
-                <!-- <li class="nav-item">
-                    <a class="nav-link " href="">
+                <li class="nav-item">
+                    <a class="nav-link  {{ (\Request::route()->getName() == 'order') ? 'active' : '' }}"
+                        href="{{route('order')}}">
                         <div
                             class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="ni ni-chart-bar-32 text-dark text-sm opacity-10"></i>
+                            <i class="ni ni-delivery-fast text-warning text-sm opacity-10"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Sub-Categories</span>
+                        <span class="nav-link-text ms-1">Orders List</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="#">
+                    <a class="nav-link  {{ (\Request::route()->getName() == 'banner_img') ? 'active' : '' }}"
+                        href="{{route('banner_img')}}">
                         <div
                             class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="ni fas fa-chart-pie text-success text-sm opacity-10"></i>
+                            <i class="ni fas fa-chart-pie text-primary text-sm opacity-10"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Products</span>
+                        <span class="nav-link-text ms-1">Banner Images</span>
                     </a>
-                </li> -->
+                </li>
                 <li class="nav-item">
                     <a class="nav-link " href="#">
                         <div
@@ -135,7 +124,7 @@
                         <span class="nav-link-text ms-1">About us</span>
                     </a>
                 </li>
-          
+
                 <li class="nav-item">
                     <a class="nav-link " href="#">
                         <div

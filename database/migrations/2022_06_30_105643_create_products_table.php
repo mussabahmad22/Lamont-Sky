@@ -18,7 +18,6 @@ class CreateProductsTable extends Migration
             $table->foreignId('cat_id')->constrained('all_categories')->default("");
             $table->foreignId('subcat_id')->constrained('sub_categories')->default("");
             $table->String('product_name');
-            $table->String('img');
             $table->longText('description');
             $table->String('price');
             $table->timestamps();

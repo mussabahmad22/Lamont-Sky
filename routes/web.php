@@ -52,10 +52,26 @@ Route::middleware('auth')->group(function () {
     //===============================Products Routes=============================================
     Route::get('products/{id}', [AdminController::class, 'products'])->name('products');
     Route::get('show_products/{id}', [AdminController::class, 'show_products'])->name('show_products');
-    Route::post('add_products', [AdminController::class, 'add_products'])->name('add_products');
+   
+    Route::get('show_add_products/{id}', [AdminController::class, 'show_add_products'])->name('show_add_products');
+    Route::post('add_products/{id}', [AdminController::class, 'add_products'])->name('add_products');
+
     Route::get('show_products/edit_products/{id}', [AdminController::class, 'edit_products'])->name('edit_products');
-    Route::PUT('product_update', [AdminController::class, 'product_update'])->name('product_update');
+    
+    Route::post('product_update/{id}', [AdminController::class, 'product_update'])->name('product_update');
     Route::delete('product_delete', [AdminController::class, 'product_delete'])->name('product_delete');
+
+    //==================================Order Routes =======================================
+    Route::get('order',[AdminController::class, 'order'])->name('order');
+    Route::get('order_details/{id}',[AdminController::class, 'order_details'])->name('order_details');
+
+    //===============================Banner Img ===========================================
+    Route::get('banner_img', [AdminController::class, 'banner_img'])->name('banner_img');
+    Route::post('add_banner_img', [AdminController::class,'add_banner_img'])->name('add_banner_img');
+    Route::delete('/ban_img_del' , [AdminController::class, 'ban_img_del'])->name('ban_img_del');
+
+    //=========================== cahnge order status ===========================================
+    Route::get('status',[AdminController::class,'status'])->name('status');
 
 
 });
