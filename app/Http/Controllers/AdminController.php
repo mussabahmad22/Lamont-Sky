@@ -18,6 +18,30 @@ use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
+
+    public function users()
+    {
+        $users =  User::where('remember_token', NULL)->get();
+        return view('admin.users', compact('users'));
+    } 
+
+    public function delete_user(Request $request)
+    {
+        $user_id = $request->delete_user_id;
+
+        $order_all = Order::where('user_id', $user_id)->get();
+        foreach($order_all as $order){
+            $order_details = OrderDetail::where('order_id', $order->id);
+            $order_details->delete();
+        }
+        $order = Order::where('user_id', $user_id);
+        $order->delete();
+
+        $users = User::findOrFail($user_id);
+        $users->delete();
+        return redirect(route('users'))->with('error', 'User Deleted successfully');
+    }
+
     public function logout()
     {
 
@@ -440,15 +464,16 @@ class AdminController extends Controller
         $result->status = $request->val;
         $result->save();
 
-        // if($result->status == 0){
-        //     $this->sendNotification($result->user_id, 'Order Notification','Your Order Status is Pending Please wait!!');
-        // }else if($result->status == 1){
-        //     $this->sendNotification($result->user_id, 'Order Notification','Your Order Status Approved by Admin');
-        // } else if($result->status == 2){
-        //     $this->sendNotification($result->user_id, 'Order Notification','Your Order Status is Cancel by Admin');
-        // }
+        if($result->status == 0){
+            $this->sendNotification($result->user_id, 'Order Notification','Your Order Status is Pending Please wait!!');
+        }else if($result->status == 1){
+            $this->sendNotification($result->user_id, 'Order Notification','Your Order Status Approved by Admin');
+        } else if($result->status == 2){
+            $this->sendNotification($result->user_id, 'Order Notification','Your Order Status is Cancel by Admin');
+        }
 
     }
+
 
     public function sendNotification($user_id, $title ,$msg)
     {
@@ -458,8 +483,8 @@ class AdminController extends Controller
         $SERVER_API_KEY = 'AAAAYFSJZLE:APA91bGHYMuxCf3gDsK0q3vkxHea4P7T5Cn3-uSUcIREm7e2luOwheo8QlfF5jGV8oXVKD0XCEQ5UDxCkY2VXjU9sKCBnrI6eNYuWDy4kW6Vv3t3X6RU6IjJHS0l5fvhW0wRq4iTAtlP';
   
         $data = [
-            "registration_ids" => $usertoken,
-            "notification" => [
+            "registration_ids" => [$usertoken],
+            "data" => [
                 "title" => $title,
                 "body" => $msg,  
             ]

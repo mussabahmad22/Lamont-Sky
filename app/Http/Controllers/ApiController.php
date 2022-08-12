@@ -23,7 +23,7 @@ class ApiController extends Controller
         $rules = [
             'email' => 'required|string|email|max:255',
             'password' => 'required',
-            'device_token'=> 'required'
+            'device_token' => 'required'
         ];
 
         $validator = FacadesValidator::make($request->all(), $rules);
@@ -44,10 +44,10 @@ class ApiController extends Controller
                 $token  = User::find($user->id);
                 $token->device_token = $request->device_token;
                 $token->save();
-                
+
                 $res['status'] = true;
                 $res['message'] = "Password Matched! You have Login successfully!";
-                $res['User Data'] = User::find($user->id);
+                $res['data'] = User::find($user->id);
                 return response()->json($res);
             } else {
 
@@ -100,13 +100,14 @@ class ApiController extends Controller
         //$users = User::create($request->all());
         $users = new User();
         $users->name = $request->name;
-        $users->profile_img = $image_name;
+        $users->profile_img = "images/" . $image_name;
         $users->username = $request->username;
         $users->dob = $request->dob;
         $users->address = $request->address;
         $users->phone = $request->phone;
         $users->email = $request->email;
         $users->password = $request->password;
+        $users->device_token = "";
         $users->save();
 
         if (is_null($users)) {
@@ -131,6 +132,16 @@ class ApiController extends Controller
 
         $finduser = User::find($request->user_id);
 
+        if ($request->file('profile_img') == null) {
+
+            $image_name = $finduser->profile_img;
+        } else {
+
+            $path_title = $request->file('profile_img')->store('public/images');
+
+            $image_name = "images/" .  basename($path_title);
+        }
+
         if (is_null($finduser)) {
 
             $res['status'] = false;
@@ -144,8 +155,7 @@ class ApiController extends Controller
             'dob' => 'required ',
             'address' => 'required',
             'phone' => 'required ',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:8',
+            'email' => 'required|email',
 
         ];
 
@@ -162,13 +172,13 @@ class ApiController extends Controller
         // $request['remember_token'] = Str::random(10);
         //$users = User::create($request->all());
         $users = User::find($request->user_id);
+        $users->profile_img = $image_name;
         $users->name = $request->name;
         $users->username = $request->username;
         $users->dob = $request->dob;
         $users->address = $request->address;
         $users->phone = $request->phone;
         $users->email = $request->email;
-        $users->password = $request->password;
         $users->save();
 
         if (is_null($users)) {
@@ -231,15 +241,14 @@ class ApiController extends Controller
     public function products(Request $request)
     {
 
-        $products = Products::where('cat_id', $request->cat_id)->where('subcat_id' , $request->subcat_id)->get();
+        $products = Products::where('cat_id', $request->cat_id)->where('subcat_id', $request->subcat_id)->get();
         $data = [];
         if (count($products) == 0) {
 
 
-        $res['status'] = false;
-        $res['message'] = "products Not Found!";
-        return response()->json($res, 404);
-
+            $res['status'] = false;
+            $res['message'] = "products Not Found!";
+            return response()->json($res, 404);
         } else {
 
             foreach ($products as $prud) {
@@ -257,10 +266,10 @@ class ApiController extends Controller
 
     //===============================Add order_list against user Routes================================
     public function add_order_list(Request $request)
-    { 
-        $result=json_decode($request->getContent(), true);
+    {
+        $result = json_decode($request->getContent(), true);
 
-    
+
         $finduser = User::find($result['user_id']);
 
         if (is_null($finduser)) {
@@ -272,14 +281,14 @@ class ApiController extends Controller
 
         $order_list = $result['order_list'];
 
-        if(count($order_list) == 0){
+        if (count($order_list) == 0) {
 
             $res['status'] = false;
             $res['message'] = "Products not Found";
             return response()->json($res);
         }
 
-        $request->validate([    
+        $request->validate([
             'user_id' => 'required',
             'order_desc' => 'required',
             'total_items' => 'required',
@@ -292,7 +301,7 @@ class ApiController extends Controller
         $order->total_items = $result['total_items'];
         $order->total_price = $result['total_price_order'];
         $order->save();
-        foreach($order_list as $list){
+        foreach ($order_list as $list) {
 
             $order_details = new OrderDetail();
             $order_details->order_id = $order->id;
@@ -300,10 +309,9 @@ class ApiController extends Controller
             $order_details->total_products = $list['total_products'];
             $order_details->total_price = $list['total_price_products'];
             $order_details->save();
-
         }
 
-        $this->sendNotification($order->user_id, 'Order Notification','Your Order Status is Pending Please wait!!');
+        $this->sendNotification($order->user_id, 'Order Notification', 'Your Order Status is Pending Please wait!!');
 
         $res['status'] = true;
         $res['message'] = "Order Add Successfully!!";
@@ -314,7 +322,9 @@ class ApiController extends Controller
     public function order_list(Request $request)
     {
 
+
         $order = Order::where('user_id', $request->user_id)->get();
+        $data = [];
 
         if (count($order) == 0) {
 
@@ -323,14 +333,125 @@ class ApiController extends Controller
             return response()->json($res, 404);
         } else {
 
+
+
+            // dd($query);
+            $order = Order::where('user_id', $request->user_id)->get();
+            foreach ($order as $que) {
+                // dd($que);
+                $query = Order::where('orders.id', $que->id)
+                    ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+                    ->join('product_details', 'order_details.product_id', '=', 'product_details.product_id')
+                    ->select('product_details.product_img', 'orders.id')->first();
+
+                $que->Order_Image = $query->product_img;
+                array_push($data, $que);
+            }
+
+
             $res['status'] = true;
             $res['message'] = "order_list against user List";
             $res['data'] = $order;
-            return response()->json($res);
+            return $res;
         }
     }
 
-    
+    //=================================pending_list againt user Api =============================================
+    public function pending_list(Request $request)
+    {
+
+
+        $order = Order::where('user_id', $request->user_id)->where('status', 0)->get();
+        $data = [];
+        if (count($order) == 0) {
+
+            $res['status'] = false;
+            $res['message'] = "pending_list Not Found!";
+            return response()->json($res, 404);
+        } else {
+
+            foreach ($order as $que) {
+                // dd($que);
+                $query = Order::where('orders.id', $que->id)
+                    ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+                    ->join('product_details', 'order_details.product_id', '=', 'product_details.product_id')
+                    ->select('product_details.product_img', 'orders.id')->first();
+
+                $que->Order_Image = $query->product_img;
+                array_push($data, $que);
+            }
+
+            $res['status'] = true;
+            $res['message'] = "pending_list against user List";
+            $res['data'] = $order;
+            return $res;
+        }
+    }
+
+    //=================================Approved_list againt user Api =============================================
+    public function approved_list(Request $request)
+    {
+
+
+        $order = Order::where('user_id', $request->user_id)->where('status', 1)->get();
+        $data = [];
+        if (count($order) == 0) {
+
+            $res['status'] = false;
+            $res['message'] = "approved_list Not Found!";
+            return response()->json($res, 404);
+        } else {
+
+            foreach ($order as $que) {
+                // dd($que);
+                $query = Order::where('orders.id', $que->id)
+                    ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+                    ->join('product_details', 'order_details.product_id', '=', 'product_details.product_id')
+                    ->select('product_details.product_img', 'orders.id')->first();
+
+                $que->Order_Image = $query->product_img;
+                array_push($data, $que);
+            }
+
+            $res['status'] = true;
+            $res['message'] = "approved_list against user List";
+            $res['data'] = $order;
+            return $res;
+        }
+    }
+
+    //=================================reject_list againt user Api =============================================
+    public function reject_list(Request $request)
+    {
+
+        $order = Order::where('user_id', $request->user_id)->where('status', 2)->get();
+        $data = [];
+        if (count($order) == 0) {
+
+            $res['status'] = false;
+            $res['message'] = "reject_list Not Found!";
+            return response()->json($res, 404);
+        } else {
+
+            foreach ($order as $que) {
+                // dd($que);
+                $query = Order::where('orders.id', $que->id)
+                    ->join('order_details', 'orders.id', '=', 'order_details.order_id')
+                    ->join('product_details', 'order_details.product_id', '=', 'product_details.product_id')
+                    ->select('product_details.product_img', 'orders.id')->first();
+
+                $que->Order_Image = $query->product_img;
+                array_push($data, $que);
+            }
+
+            $res['status'] = true;
+            $res['message'] = "reject_list against user List";
+            $res['data'] = $order;
+            return $res;
+        }
+    }
+
+
     //=================================banner_imgs Api =============================================
     public function banner_img()
     {
@@ -351,38 +472,38 @@ class ApiController extends Controller
         }
     }
 
-    public function sendNotification($user_id, $title ,$msg)
+    public function sendNotification($user_id, $title, $msg)
     {
         $user = User::find($user_id);
         $usertoken = $user->device_token;
-          
+
         $SERVER_API_KEY = 'AAAAYFSJZLE:APA91bGHYMuxCf3gDsK0q3vkxHea4P7T5Cn3-uSUcIREm7e2luOwheo8QlfF5jGV8oXVKD0XCEQ5UDxCkY2VXjU9sKCBnrI6eNYuWDy4kW6Vv3t3X6RU6IjJHS0l5fvhW0wRq4iTAtlP';
-  
+
         $data = [
-            "registration_ids" => $usertoken,
-            "notification" => [
+            "registration_ids" => [$usertoken],
+            "data" => [
                 "title" => $title,
-                "body" => $msg,  
+                "body" => $msg,
             ]
         ];
         $dataString = json_encode($data);
-    
+
         $headers = [
             'Authorization: key=' . $SERVER_API_KEY,
             'Content-Type: application/json',
         ];
-    
+
         $ch = curl_init();
-      
+
         curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
-               
+
         $response = curl_exec($ch);
-  
-        dd($response);
+
+        // dd($response);
     }
 }

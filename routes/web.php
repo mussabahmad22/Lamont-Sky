@@ -73,6 +73,10 @@ Route::middleware('auth')->group(function () {
     //=========================== cahnge order status ===========================================
     Route::get('status',[AdminController::class,'status'])->name('status');
 
+    //=========================== users ===========================================
+    Route::get('/users', [AdminController::class, 'users'])->name('users');
+    Route::delete('/delete_user' , [AdminController::class, 'delete_user'])->name('delete_user');
+
 
 });
 

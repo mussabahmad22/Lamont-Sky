@@ -41,5 +41,14 @@ Route::post('add_order_list', [ApiController::class, 'add_order_list'])->name('a
 //===============================order_list against user Routes=============================================
 Route::get('order_list', [ApiController::class, 'order_list'])->name('order_list');
 
+//===============================pending_list against user Routes=============================================
+Route::get('pending_list', [ApiController::class, 'pending_list'])->name('pending_list');
+
+//===============================approved_list against user Routes=============================================
+Route::get('approved_list', [ApiController::class, 'approved_list'])->name('approved_list');
+
+//===============================reject_list against user Routes=============================================
+Route::get('reject_list', [ApiController::class, 'reject_list'])->name('reject_list');
+
 //===============================Banner Img ===========================================
 Route::get('banner_img', [ApiController::class, 'banner_img'])->name('banner_img');

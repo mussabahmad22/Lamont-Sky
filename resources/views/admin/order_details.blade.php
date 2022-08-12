@@ -59,10 +59,10 @@
                                         </td>
                                     
                                         <td>
-                                            <?= $que->price ?>
+                                            <?= $que->price ?> $
                                         </td>
                                         <td>
-                                            <?= $que->total_products ?>
+                                            <?= $que->total_products ?> 
                                         </td>
                                         <td>
                                             <?= $que->total_price ?> $

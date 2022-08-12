@@ -51,13 +51,13 @@
                                                 {{'Product Description is required'}}
                                                 @enderror
                                             </span>
-                                        </div>
+                                        </div> 
                                         <div class="mb-3 ">
                                             <label class="form-label">Product Price*</label>
-                                            <input type="text" class="form-control" name="price" value="{{ isset($product->price)?$product->price:'' }}"  required>
+                                            <input type="number" class="form-control" name="price" value="{{ isset($product->price)?$product->price:'' }}"  required>
                                             <span class="text-danger">
                                                 @error('price')
-                                                {{'Product Price is required'}}
+                                                {{'Product Price is required and must be integer'}}
                                                 @enderror
                                             </span>
                                         </div>

@@ -50,7 +50,7 @@
                                                 {{ $product->description }}
                                             </td>
                                             <td>
-                                                {{ $product->price }}
+                                                {{ $product->price }} $
                                             </td>
                                             <td>
                                                 <a class="flex items-center text-theme-1 mr-3 btn text-info"
