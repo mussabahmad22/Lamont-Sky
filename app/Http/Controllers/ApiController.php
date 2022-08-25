@@ -63,7 +63,7 @@ class ApiController extends Controller
         }
     }
 
-    //================== Add Users Api ====================================
+    //=========================== Add Users Api ======================================
     public function add_users(Request $request)
     {
         if ($request->file('profile_img') == null) {
@@ -330,7 +330,7 @@ class ApiController extends Controller
 
             $res['status'] = false;
             $res['message'] = "order_list Not Found!";
-            return response()->json($res, 404);
+            return $res;
         } else {
 
 
